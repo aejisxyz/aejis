@@ -2294,22 +2294,21 @@ The analysis process has been stopped.
 
 @app.route('/results/<analysis_id>')
 def get_analysis_results(analysis_id):
-    """Get complete analysis results with HTML interface"""
+    """Redirect to React frontend - no longer serving HTML from Flask"""
+    # Get the frontend URL from environment or default to production
+    frontend_url = os.getenv('WEBSITE_URL', 'https://www.aejis.xyz')
+    
+    # Check if analysis exists
     if analysis_id not in analysis_results:
-        return jsonify({'error': 'Analysis not found'}), 404
+        return redirect(f'{frontend_url}/')
     
     result = analysis_results[analysis_id]
     
-    if result['status'] != 'completed':
-        return jsonify({'error': 'Analysis not completed yet'}), 400
-    
-    # Check if this is a URL analysis and redirect to React frontend
+    # Redirect to appropriate React frontend page
     if result.get('is_url', False):
-        # Redirect to React frontend URL results page
-        return redirect(f'http://localhost:3000/url-results/{analysis_id}')
-    
-    # Return HTML results page for file analysis
-    return render_results_page(analysis_id, result['results'])
+        return redirect(f'{frontend_url}/url-results/{analysis_id}')
+    else:
+        return redirect(f'{frontend_url}/results/{analysis_id}')
 
 @app.route('/url-results-data/<analysis_id>')
 def get_url_results_data(analysis_id):
@@ -3317,10 +3316,16 @@ def get_archive_file_content_direct(analysis_id, file_path):
 
 @app.route('/preview/<analysis_id>')
 def get_file_preview(analysis_id):
-    """Get file preview/contents"""
-    if analysis_id not in analysis_results:
-        return jsonify({'error': 'Analysis not found'}), 404
+    """Redirect to React frontend preview page"""
+    frontend_url = os.getenv('WEBSITE_URL', 'https://www.aejis.xyz')
     
+    if analysis_id not in analysis_results:
+        return redirect(f'{frontend_url}/')
+    
+    # Redirect to React frontend preview page
+    return redirect(f'{frontend_url}/preview/{analysis_id}')
+    
+    # Old code below (kept for reference but not executed)
     result = analysis_results[analysis_id]
     
     if result['status'] != 'completed':
