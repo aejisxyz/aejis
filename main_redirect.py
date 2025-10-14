@@ -656,20 +656,7 @@ Analysis Results:
 • Detailed report generated
 
 View Your Results:
-Click the links below to see your complete security analysis report.
-            """
-            
-            # Create URLs for both views
-            preview_url = f"{self.website_url}/preview/{analysis_id}"
-            
-            # Send success message with URLs in text (Telegram doesn't allow localhost in buttons)
-            success_message_with_urls = success_message + f"""
-
-View Detailed Report:
 {results_url}
-
-Preview File Contents:
-{preview_url}
             """
             
             await processing_msg.edit_text(success_message_with_urls)
