@@ -29,11 +29,14 @@ const Dashboard = () => {
     }
   };
 
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   // Handle Telegram linking
   const handleLinkTelegram = async () => {
     try {
       // Call backend API to generate token
-      const response = await fetch('http://localhost:5000/api/generate-link-token', {
+      const response = await fetch(`${API_URL}/api/generate-link-token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +68,7 @@ const Dashboard = () => {
   // Handle unlink Telegram
   const handleUnlinkTelegram = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/unlink-telegram', {
+      const response = await fetch(`${API_URL}/api/unlink-telegram`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +95,7 @@ const Dashboard = () => {
   useEffect(() => {
     const checkTelegramLink = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/check-telegram-link/${currentUser.uid}`);
+        const response = await fetch(`${API_URL}/api/check-telegram-link/${currentUser.uid}`);
         const data = await response.json();
         
         if (data.success && data.linked) {
