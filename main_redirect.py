@@ -801,7 +801,7 @@ Website Intelligence:
 • Comprehensive report generated
 
 View Your Results:
-{self.website_url}/results/{analysis_id}
+{self.website_url}/url-results/{analysis_id}
 
 Available Features:
 • Complete security analysis
