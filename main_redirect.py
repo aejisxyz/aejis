@@ -659,7 +659,7 @@ View Your Results:
 {results_url}
             """
             
-            await processing_msg.edit_text(success_message_with_urls)
+            await processing_msg.edit_text(success_message)
             
             # Log the successful completion
             logger.info(f"Analysis completed: {file_name} ({file_size_mb:.2f}MB) from user {user.id}, analysis_id: {analysis_id}")
