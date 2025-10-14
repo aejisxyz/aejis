@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPlay, FaDownload, FaPause, FaVolumeUp, FaVolumeMute, FaExpand, FaCompress } from 'react-icons/fa';
+import API_URL from '../../config/api';
 import './ViewerStyles.css';
 
 const VideoViewer = ({ fileContent, previewData, onClose, detectedType, analysisId }) => {
@@ -26,7 +27,7 @@ const VideoViewer = ({ fileContent, previewData, onClose, detectedType, analysis
   // Generate video URL for streaming
   const getVideoUrl = () => {
     if (analysisId) {
-      const url = `http://localhost:5000/stream-video/${analysisId}`;
+      const url = `${API_URL}/stream-video/${analysisId}`;
       console.log('🎥 VideoViewer - Generated video URL:', url);
       return url;
     }
@@ -36,7 +37,7 @@ const VideoViewer = ({ fileContent, previewData, onClose, detectedType, analysis
 
   const handleDownload = () => {
     if (analysisId) {
-      const downloadUrl = `http://localhost:5000/download/${analysisId}`;
+      const downloadUrl = `${API_URL}/download/${analysisId}`;
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = filename;

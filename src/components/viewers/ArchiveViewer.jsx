@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FaFileArchive, FaDownload, FaFolder, FaFile, FaEye, FaTimes, FaSpinner, FaExpand, FaCompress } from 'react-icons/fa';
+import API_URL from '../../config/api';
 import './ViewerStyles.css';
 
 const ArchiveViewer = ({ fileContentData, previewData, analysisId, onClose, detectedType }) => {
@@ -44,7 +45,7 @@ const ArchiveViewer = ({ fileContentData, previewData, analysisId, onClose, dete
     setSelectedFile(file);
     
     try {
-      const response = await fetch(`http://localhost:5000/preview/${analysisId}/file/${file.path}`);
+      const response = await fetch(`${API_URL}/preview/${analysisId}/file/${file.path}`);
       const data = await response.json();
       
       if (data.success) {

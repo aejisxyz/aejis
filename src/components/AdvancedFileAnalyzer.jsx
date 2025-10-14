@@ -32,6 +32,7 @@ import {
   FaPlay,
   FaFolder
 } from 'react-icons/fa';
+import API_URL from '../config/api';
 import './AdvancedFileAnalyzer.css';
 
 const AdvancedFileAnalyzer = () => {
@@ -445,7 +446,7 @@ const AdvancedFileAnalyzer = () => {
   const loadPreviewData = async (id) => {
     setPreviewLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/preview/${id}`);
+      const response = await axios.get(`${API_URL}/preview/${id}`);
       console.log('Preview data received:', response.data);
       
       // Handle different response formats

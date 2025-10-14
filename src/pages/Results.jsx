@@ -28,6 +28,7 @@ import {
 import NoVNCViewer from '../components/NoVNCViewer';
 import SmartPreviewSwitcher from '../components/SmartPreviewSwitcher';
 import ArchiveViewer from '../components/viewers/ArchiveViewer';
+import API_URL from '../config/api';
 import './Results.css';
 
 const Results = () => {
@@ -57,7 +58,7 @@ const Results = () => {
     try {
       setLoading(true);
       // Add cache-busting parameter to ensure fresh data
-      const response = await axios.get(`http://localhost:5000/api/results/${id}?t=${Date.now()}`);
+      const response = await axios.get(`${API_URL}/api/results/${id}?t=${Date.now()}`);
       setResults(response.data);
       
       // Load preview data after results are loaded
@@ -116,7 +117,7 @@ const Results = () => {
         // Go directly to preview endpoint
         try {
           // Add cache-busting parameter to ensure fresh data
-          const response = await axios.get(`http://localhost:5000/preview/${id}?t=${Date.now()}`);
+          const response = await axios.get(`${API_URL}/preview/${id}?t=${Date.now()}`);
           console.log('🔍 Docker preview response:', response.data);
           if (response.data && (response.data.success || response.data.preview_type)) {
             console.log('✅ Setting preview data:', response.data.preview_type);
@@ -132,7 +133,7 @@ console.error('Error loading Docker preview:', error);
       } else {
         try {
           // First try to get file content directly for non-archive files
-          const contentResponse = await axios.get(`http://localhost:5000/api/file-content/${id}`);
+          const contentResponse = await axios.get(`${API_URL}/api/file-content/${id}`);
           
           if (contentResponse.data.success) {
             const contentData = contentResponse.data;
@@ -174,7 +175,7 @@ console.error('Error loading Docker preview:', error);
       // Fallback to original preview endpoint
       try {
         // Add cache-busting parameter to ensure fresh data
-        const response = await axios.get(`http://localhost:5000/preview/${id}?t=${Date.now()}`);
+        const response = await axios.get(`${API_URL}/preview/${id}?t=${Date.now()}`);
         if (response.data.success) {
           setPreviewData(response.data);
         }
@@ -200,7 +201,7 @@ console.error('Error loading Docker preview:', error);
 
   const fetchArchiveFileContent = async (filePath, file) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/archive-file-content`, {
+      const response = await axios.post(`${API_URL}/api/archive-file-content`, {
         analysis_id: id,
         file_path: filePath
       });

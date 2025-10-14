@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import API_URL from '../config/api';
 import './NoVNCViewer.css';
 
 const NoVNCViewer = ({ analysisId, targetUrl, onClose }) => {
@@ -23,7 +24,7 @@ const NoVNCViewer = ({ analysisId, targetUrl, onClose }) => {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`http://localhost:5000/browser/${analysisId}`);
+      const response = await fetch(`${API_URL}/browser/${analysisId}`);
       const data = await response.json();
 
       if (data.success) {
@@ -42,7 +43,7 @@ const NoVNCViewer = ({ analysisId, targetUrl, onClose }) => {
 
   const stopBrowserSession = async () => {
     try {
-      await fetch(`http://localhost:5000/browser/${analysisId}/stop`, {
+      await fetch(`${API_URL}/browser/${analysisId}/stop`, {
         method: 'POST'
       });
       setIsConnected(false);

@@ -23,6 +23,7 @@ import {
   Network,
   TrendingUp
 } from 'lucide-react';
+import API_URL from '../config/api';
 import './URLResults.css';
 
 const URLResults = () => {
@@ -41,14 +42,14 @@ const URLResults = () => {
     try {
       setLoading(true);
       // Use the dedicated URL results data endpoint
-      const response = await axios.get(`http://localhost:5000/url-results-data/${id}`);
+      const response = await axios.get(`${API_URL}/url-results-data/${id}`);
       console.log('URL Results Data:', response.data);
       setResults(response.data);
     } catch (error) {
       console.error('Error fetching URL results:', error);
       // Fallback to the general API endpoint
       try {
-        const response = await axios.get(`http://localhost:5000/api/results/${id}`);
+        const response = await axios.get(`${API_URL}/api/results/${id}`);
         console.log('Fallback API Data:', response.data);
         setResults(response.data);
       } catch (fallbackError) {
@@ -81,7 +82,7 @@ const URLResults = () => {
         `);
         
         // Create iframe for browser preview - use auto-connect for seamless experience
-        const pureUrl = 'http://localhost:5000/vnc-auto-connect.html?url=' + encodeURIComponent(data.target_url);
+        const pureUrl = '${API_URL}/vnc-auto-connect.html?url=' + encodeURIComponent(data.target_url);
         setBrowserPreview(`
           <div class="browser-loading">🌐 Loading isolated browser...</div>
           <iframe src="${pureUrl}" 

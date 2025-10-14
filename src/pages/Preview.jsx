@@ -25,6 +25,7 @@ import {
   FaSortDown
 } from 'react-icons/fa';
 import SmartPreviewSwitcher from '../components/SmartPreviewSwitcher';
+import API_URL from '../config/api';
 import './Preview.css';
 
 const Preview = () => {
@@ -63,7 +64,7 @@ const Preview = () => {
   const fetchResults = async () => {
     try {
       // Add cache-busting parameter to ensure fresh data
-      const response = await axios.get(`http://localhost:5000/api/results/${id}?t=${Date.now()}`);
+      const response = await axios.get(`${API_URL}/api/results/${id}?t=${Date.now()}`);
       setResults(response.data);
     } catch (err) {
       console.error('Results fetch error:', err);
@@ -73,7 +74,7 @@ const Preview = () => {
   const fetchPreview = async () => {
     try {
       // Add cache-busting parameter to ensure fresh data
-      const response = await axios.get(`http://localhost:5000/preview/${id}?t=${Date.now()}`);
+      const response = await axios.get(`${API_URL}/preview/${id}?t=${Date.now()}`);
       console.log('Preview data received:', response.data);
       console.log('Response status:', response.status);
       console.log('Preview data keys:', Object.keys(response.data));
@@ -99,7 +100,7 @@ const Preview = () => {
     setShowFileViewer(true);
 
     try {
-      const response = await axios.get(`http://localhost:5000/preview/${id}/file/${filePath}`);
+      const response = await axios.get(`${API_URL}/preview/${id}/file/${filePath}`);
       setFileContent(response.data);
       toast.success(`Opened ${response.data.filename || filePath}`);
     } catch (err) {
@@ -125,7 +126,7 @@ const Preview = () => {
     setArchiveFileMetadata(fileInfo);
 
     try {
-      const response = await axios.get(`http://localhost:5000/preview/${id}/archive-file/${encodeURIComponent(filePath)}`);
+      const response = await axios.get(`${API_URL}/preview/${id}/archive-file/${encodeURIComponent(filePath)}`);
       setArchiveFileContent(response.data);
       toast.success(`Opened ${fileInfo.name}`);
     } catch (err) {
