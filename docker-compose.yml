@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # noVNC Browser Container for Aejis
+  aejis-browser:
+    image: consol/ubuntu-xfce-vnc:latest
+    container_name: aejis-browser
+    ports:
+      - "6080:6080"  # noVNC web interface
+      - "5900:5900"  # VNC port
+    environment:
+      - VNC_PW=aejis123  # VNC password
+      - VNC_RESOLUTION=1920x1080
+      - VNC_COL_DEPTH=24
+      - DISPLAY=:1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - aejis_browser_data:/home/headless
+    networks:
+      - aejis-network
+    restart: unless-stopped
+    command: >
+      bash -c "
+        # Install Chrome
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - &&
+        echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list &&
+        apt-get update &&
+        apt-get install -y google-chrome-stable &&
+        
+        # Install additional tools
+        apt-get install -y firefox-esr curl wget &&
+        
+        # Start VNC server
+        /dockerstartup/vnc_startup.sh
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Aejis Backend (existing)
+  aejis-backend:
+    build: .
+    container_name: aejis-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+      - aejis_analysis_data:/app/analysis_data
+    networks:
+      - aejis-network
+    depends_on:
+      - aejis-browser
+    environment:
+      - BROWSER_VNC_URL=http://aejis-browser:6080
+      - BROWSER_VNC_PASSWORD=aejis123
+    restart: unless-stopped
+
+  # Aejis Frontend (run locally, not in Docker)
+  # aejis-frontend:
+  #   build: ./frontend
+  #   container_name: aejis-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - aejis-network
+  #   depends_on:
+  #     - aejis-backend
+  #   restart: unless-stopped
+
+volumes:
+  aejis_browser_data:
+  aejis_analysis_data:
+
+networks:
+  aejis-network:
+    driver: bridge

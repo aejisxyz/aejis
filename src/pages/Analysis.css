@@ -1,0 +1,354 @@
+.analysis-page {
+  padding: 120px 0 60px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.loading-state .spinner,
+.error-state .error-icon {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+}
+
+.loading-state .spinner {
+  color: #667eea;
+  animation: spin 1s linear infinite;
+}
+
+.error-state .error-icon {
+  color: #f44336;
+}
+
+.loading-state h2,
+.error-state h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.loading-state p,
+.error-state p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.analysis-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 3rem;
+}
+
+.analysis-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.analysis-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.file-info {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.file-details h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.file-details p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.25rem 0;
+}
+
+.progress-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-header h3 {
+  color: white;
+  margin: 0;
+}
+
+.progress-percentage {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.analysis-steps {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.step.completed {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.step.processing {
+  background: rgba(255, 152, 0, 0.1);
+  border-color: rgba(255, 152, 0, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.step-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.step-icon-container {
+  flex-shrink: 0;
+}
+
+.step-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.step-icon.completed {
+  background: #4caf50;
+  color: white;
+}
+
+.step-icon.processing {
+  background: #ff9800;
+  color: white;
+  animation: spin 1s linear infinite;
+}
+
+.step-icon.pending {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.step-info {
+  flex: 1;
+}
+
+.step-info h4 {
+  color: white;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.step-info p {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.step-visual {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.analysis-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-card h4 {
+  color: white;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.info-card p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.analysis-footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.analysis-footer p {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analysis-page {
+    padding: 100px 0 40px;
+  }
+
+  .analysis-header h1 {
+    font-size: 2rem;
+  }
+
+  .analysis-header p {
+    font-size: 1rem;
+  }
+
+  .file-info,
+  .progress-section,
+  .analysis-steps {
+    padding: 1.5rem;
+  }
+
+  .step {
+    padding: 1rem;
+  }
+
+  .step-content {
+    gap: 1rem;
+  }
+
+  .step-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .step-info h4 {
+    font-size: 1rem;
+  }
+
+  .step-info p {
+    font-size: 0.85rem;
+  }
+
+  .step-visual {
+    font-size: 1.25rem;
+  }
+
+  .analysis-info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .info-card {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .analysis-page {
+    padding: 80px 0 30px;
+  }
+
+  .analysis-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .file-info,
+  .progress-section,
+  .analysis-steps {
+    padding: 1rem;
+  }
+
+  .step {
+    padding: 0.75rem;
+  }
+
+  .step-content {
+    gap: 0.75rem;
+  }
+
+  .step-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .step-info h4 {
+    font-size: 0.9rem;
+  }
+
+  .step-info p {
+    font-size: 0.8rem;
+  }
+
+  .step-visual {
+    font-size: 1.1rem;
+  }
+}
+

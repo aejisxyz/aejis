@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Commercial-friendly noVNC Browser
+  aejis-browser:
+    build: 
+      context: .
+      dockerfile: Dockerfile.browser
+    container_name: aejis-browser-commercial
+    ports:
+      - "6080:6080"
+      - "5900:5900"
+    environment:
+      - VNC_PW=aejis123
+      - VNC_RESOLUTION=1920x1080
+      - DISPLAY=:1
+    volumes:
+      - aejis_browser_data:/home/headless
+    networks:
+      - aejis-network
+    restart: unless-stopped
+
+  # Aejis Backend
+  aejis-backend:
+    build: .
+    container_name: aejis-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+      - aejis_analysis_data:/app/analysis_data
+    networks:
+      - aejis-network
+    depends_on:
+      - aejis-browser
+    environment:
+      - BROWSER_VNC_URL=http://aejis-browser:6080
+      - BROWSER_VNC_PASSWORD=aejis123
+    restart: unless-stopped
+
+volumes:
+  aejis_browser_data:
+  aejis_analysis_data:
+
+networks:
+  aejis-network:
+    driver: bridge
+

@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  aejis-browser-isolation:
+    build:
+      context: .
+      dockerfile: Dockerfile.browser-isolation
+    container_name: aejis-browser-isolation
+    ports:
+      - "6080:6080"  # VNC web interface
+      - "5901:5901"  # VNC server
+      - "8080:8080"  # Custom VNC web client
+    environment:
+      - VNC_PASSWORD=aejis123
+      - VNC_RESOLUTION=1920x1080
+      - DISPLAY=:1
+      - BROWSER_USER=aejis
+    volumes:
+      - browser-isolation-data:/home/aejis/browser-isolation/data
+      - browser-isolation-cache:/tmp/browser-cache
+    networks:
+      - aejis-network
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    # devices:
+    #   - /dev/dri:/dev/dri  # Commented out for Windows compatibility
+    shm_size: 2gb
+    mem_limit: 4g
+    # Network isolation
+    sysctls:
+      - net.ipv4.ip_forward=0
+    # Additional security
+    read_only: false
+    tmpfs:
+      - /tmp
+      - /var/tmp
+
+  aejis-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aejis-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./analysis_data:/app/analysis_data
+      - browser-isolation-data:/app/browser_isolation_data
+    networks:
+      - aejis-network
+    depends_on:
+      - aejis-browser-isolation
+    restart: unless-stopped
+
+volumes:
+  browser-isolation-data:
+    driver: local
+  browser-isolation-cache:
+    driver: local
+
+networks:
+  aejis-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

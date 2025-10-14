@@ -1,0 +1,307 @@
+# Aejis Browser Isolation System - Built from scratch for commercial use
+# 100% open source, no licensing restrictions
+
+FROM ubuntu:22.04
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=:1
+ENV VNC_PORT=5901
+ENV VNC_PASSWORD=aejis123
+ENV VNC_RESOLUTION=1920x1080
+ENV BROWSER_USER=aejis
+ENV BROWSER_HOME=/home/aejis
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    # Core system
+    curl \
+    wget \
+    git \
+    build-essential \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates \
+    gnupg \
+    lsb-release \
+    # X11 and VNC
+    xvfb \
+    x11vnc \
+    xfce4 \
+    xfce4-goodies \
+    xfce4-terminal \
+    # Browser and tools
+    firefox \
+    chromium-browser \
+    chromium-browser-l10n \
+    chromium-codecs-ffmpeg \
+    # Media players for video/audio support
+    vlc \
+    mpv \
+    # Additional media codecs and libraries
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    ffmpeg \
+    # Network tools
+    tor \
+    proxychains4 \
+    # Security tools
+    iptables \
+    ufw \
+    # Utilities
+    unzip \
+    zip \
+    nano \
+    htop \
+    net-tools \
+    iputils-ping \
+    dnsutils \
+    # File managers and desktop utilities
+    thunar \
+    thunar-volman \
+    thunar-archive-plugin \
+    thunar-media-tags-plugin \
+    # Audio system
+    pulseaudio \
+    pavucontrol \
+    alsa-utils \
+    # Python for VNC web client
+    python3 \
+    python3-pip \
+    python3-websockify \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/*
+
+# Create browser user
+RUN useradd -m -s /bin/bash ${BROWSER_USER} && \
+    echo "${BROWSER_USER}:${VNC_PASSWORD}" | chpasswd && \
+    usermod -aG sudo ${BROWSER_USER}
+
+# Create browser isolation directory
+RUN mkdir -p ${BROWSER_HOME}/browser-isolation && \
+    chown -R ${BROWSER_USER}:${BROWSER_USER} ${BROWSER_HOME}
+
+# Install custom VNC web client (noVNC alternative)
+RUN cd /opt && \
+    git clone https://github.com/novnc/noVNC.git && \
+    cd noVNC && \
+    git checkout v1.3.0 && \
+    chmod +x utils/novnc_proxy
+
+# Install websockify
+RUN pip3 install websockify
+
+# Create browser isolation scripts
+COPY browser-isolation-setup.sh ${BROWSER_HOME}/browser-isolation/
+COPY browser-launcher.sh ${BROWSER_HOME}/browser-isolation/
+COPY location-spoofer.sh ${BROWSER_HOME}/browser-isolation/
+COPY vnc-web-client.py ${BROWSER_HOME}/browser-isolation/
+
+# Make scripts executable
+RUN chmod +x ${BROWSER_HOME}/browser-isolation/*.sh && \
+    chmod +x ${BROWSER_HOME}/browser-isolation/*.py && \
+    chown -R ${BROWSER_USER}:${BROWSER_USER} ${BROWSER_HOME}/browser-isolation
+
+# Create startup script
+RUN echo '#!/bin/bash\n\
+# Aejis Browser Isolation System Startup\n\
+echo "🚀 Starting Aejis Browser Isolation System..."\n\
+echo "🛡️ 100% Commercial-friendly (no licensing restrictions)"\n\
+echo "🔒 Complete isolation with random location spoofing"\n\
+\n\
+# Start Xvfb\n\
+Xvfb :1 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
+sleep 3\n\
+\n\
+# Start XFCE desktop\n\
+DISPLAY=:1 startxfce4 &\n\
+sleep 5\n\
+\n\
+# Completely disable all XFCE dialogs, notifications, and problematic plugins\n\
+mkdir -p /home/${BROWSER_USER}/.config/xfce4/xfconf/xfce-perchannel-xml\n\
+mkdir -p /home/${BROWSER_USER}/.config/xfce4/panel\n\
+mkdir -p /home/${BROWSER_USER}/.config/autostart\n\
+\n\
+# Disable power manager completely\n\
+echo "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\n\
+<channel name=\\"xfce4-power-manager\\" version=\\"1.0\\">\n\
+  <property name=\\"xfce4-power-manager\\" type=\\"empty\\">\n\
+    <property name=\\"show-panel-label\\" type=\\"int\\" value=\\"0\\"/>\n\
+    <property name=\\"show-tray-icon\\" type=\\"bool\\" value=\\"false\\"/>\n\
+    <property name=\\"lock-screen-suspend-hibernate\\" type=\\"bool\\" value=\\"false\\"/>\n\
+    <property name=\\"dpms-enabled\\" type=\\"bool\\" value=\\"false\\"/>\n\
+    <property name=\\"blank-on-ac\\" type=\\"int\\" value=\\"0\\"/>\n\
+    <property name=\\"blank-on-battery\\" type=\\"int\\" value=\\"0\\"/>\n\
+    <property name=\\"dpms-on-ac-sleep\\" type=\\"uint\\" value=\\"0\\"/>\n\
+    <property name=\\"dpms-on-ac-off\\" type=\\"uint\\" value=\\"0\\"/>\n\
+    <property name=\\"dpms-on-battery-sleep\\" type=\\"uint\\" value=\\"0\\"/>\n\
+    <property name=\\"dpms-on-battery-off\\" type=\\"uint\\" value=\\"0\\"/>\n\
+  </property>\n\
+</channel>" > /home/${BROWSER_USER}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml\n\
+\n\
+# Disable notifications completely\n\
+echo "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\n\
+<channel name=\\"xfce4-notifyd\\" version=\\"1.0\\">\n\
+  <property name=\\"applications\\" type=\\"empty\\">\n\
+    <property name=\\"known_applications\\" type=\\"array\\">\n\
+    </property>\n\
+  </property>\n\
+  <property name=\\"notify-location\\" type=\\"uint\\" value=\\"3\\"/>\n\
+  <property name=\\"theme\\" type=\\"string\\" value=\\"Default\\"/>\n\
+  <property name=\\"do-fadeout\\" type=\\"bool\\" value=\\"false\\"/>\n\
+  <property name=\\"do-slideout\\" type=\\"bool\\" value=\\"false\\"/>\n\
+  <property name=\\"expire-timeout\\" type=\\"int\\" value=\\"1\\"/>\n\
+</channel>" > /home/${BROWSER_USER}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-notifyd.xml\n\
+\n\
+# Create minimal panel configuration with no problematic plugins\n\
+echo "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\n\
+<channel name=\\"xfce4-panel\\" version=\\"1.0\\">\n\
+  <property name=\\"configver\\" type=\\"int\\" value=\\"2\\"/>\n\
+  <property name=\\"panels\\" type=\\"array\\">\n\
+    <value type=\\"int\\" value=\\"1\\"/>\n\
+  </property>\n\
+  <property name=\\"panel-1\\" type=\\"empty\\">\n\
+    <property name=\\"position\\" type=\\"string\\" value=\\"p=6;x=0;y=0\\"/>\n\
+    <property name=\\"length\\" type=\\"uint\\" value=\\"100\\"/>\n\
+    <property name=\\"position-locked\\" type=\\"bool\\" value=\\"true\\"/>\n\
+    <property name=\\"size\\" type=\\"uint\\" value=\\"28\\"/>\n\
+    <property name=\\"plugin-ids\\" type=\\"array\\">\n\
+      <value type=\\"int\\" value=\\"1\\"/>\n\
+    </property>\n\
+  </property>\n\
+  <property name=\\"plugins\\" type=\\"empty\\">\n\
+    <property name=\\"plugin-1\\" type=\\"string\\" value=\\"applicationsmenu\\"/>\n\
+  </property>\n\
+</channel>" > /home/${BROWSER_USER}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml\n\
+\n\
+# Disable power manager autostart\n\
+echo "[Desktop Entry]\n\
+Hidden=true" > /home/${BROWSER_USER}/.config/autostart/xfce4-power-manager.desktop\n\
+\n\
+# Disable notification daemon autostart\n\
+echo "[Desktop Entry]\n\
+Hidden=true" > /home/${BROWSER_USER}/.config/autostart/xfce4-notifyd.desktop\n\
+\n\
+# Configure VLC for optimal video playback\n\
+mkdir -p /home/${BROWSER_USER}/.config/vlc\n\
+echo "[qt4]\n\
+qt-privacy-ask=0\n\
+qt-video-autoresize=1\n\
+qt-fs-controller=0\n\
+\n\
+[core]\n\
+intf=qt4\n\
+video=1\n\
+audio=1\n\
+sout-keep=1\n\
+\n\
+[modules]\n\
+demux=any\n\
+access=any" > /home/${BROWSER_USER}/.config/vlc/vlcrc\n\
+\n\
+# Configure MPV for optimal performance\n\
+mkdir -p /home/${BROWSER_USER}/.config/mpv\n\
+echo "# MPV Configuration for Aejis Browser Isolation\n\
+vo=gpu\n\
+hwdec=auto\n\
+profile=gpu-hq\n\
+scale=ewa_lanczossharp\n\
+cscale=ewa_lanczossharp\n\
+video-sync=display-resample\n\
+interpolation\n\
+tscale=oversample\n\
+keep-open=yes\n\
+volume-max=150\n\
+cache=yes\n\
+demuxer-max-bytes=150MiB\n\
+demuxer-max-back-bytes=50MiB" > /home/${BROWSER_USER}/.config/mpv/mpv.conf\n\
+\n\
+# Set up file associations for media files\n\
+mkdir -p /home/${BROWSER_USER}/.local/share/applications\n\
+echo "[Desktop Entry]\n\
+Name=VLC Media Player\n\
+Comment=Play media files with VLC\n\
+Exec=vlc %f\n\
+Icon=vlc\n\
+Terminal=false\n\
+Type=Application\n\
+Categories=AudioVideo;Player;Recorder;\n\
+MimeType=video/mp4;video/x-msvideo;video/quicktime;video/x-matroska;video/x-ms-wmv;video/x-flv;audio/mpeg;audio/x-wav;audio/ogg;" > /home/${BROWSER_USER}/.local/share/applications/vlc.desktop\n\
+\n\
+echo "[Desktop Entry]\n\
+Name=MPV Media Player\n\
+Comment=Lightweight media player\n\
+Exec=mpv %f\n\
+Icon=mpv\n\
+Terminal=false\n\
+Type=Application\n\
+Categories=AudioVideo;Player;\n\
+MimeType=video/mp4;video/x-msvideo;video/quicktime;video/x-matroska;video/x-ms-wmv;video/x-flv;audio/mpeg;audio/x-wav;audio/ogg;" > /home/${BROWSER_USER}/.local/share/applications/mpv.desktop\n\
+\n\
+# Set default applications for media files\n\
+mkdir -p /home/${BROWSER_USER}/.config\n\
+echo "[Default Applications]\n\
+video/mp4=vlc.desktop\n\
+video/x-msvideo=vlc.desktop\n\
+video/quicktime=vlc.desktop\n\
+video/x-matroska=vlc.desktop\n\
+video/x-ms-wmv=vlc.desktop\n\
+video/x-flv=vlc.desktop\n\
+audio/mpeg=vlc.desktop\n\
+audio/x-wav=vlc.desktop\n\
+audio/ogg=vlc.desktop" > /home/${BROWSER_USER}/.config/mimeapps.list\n\
+\n\
+# Initialize audio system\n\
+pulseaudio --start --log-target=syslog &\n\
+\n\
+# Set proper ownership\n\
+chown -R ${BROWSER_USER}:${BROWSER_USER} /home/${BROWSER_USER}/.config\n\
+chown -R ${BROWSER_USER}:${BROWSER_USER} /home/${BROWSER_USER}/.local\n\
+\n\
+# Start VNC server on correct port 5901\n\
+x11vnc -display :1 -rfbport 5901 -nopw -listen localhost -xkb -ncache 10 -ncache_cr -forever -shared &\n\
+sleep 3\n\
+\n\
+# Start VNC web client with proper configuration\n\
+cd /opt/noVNC && \
+./utils/novnc_proxy --vnc localhost:5901 --listen 6080 --web /opt/noVNC &\n\
+sleep 5\n\
+\n\
+# Start browser isolation setup\n\
+su - ${BROWSER_USER} -c "${BROWSER_HOME}/browser-isolation/browser-isolation-setup.sh" &\n\
+sleep 3\n\
+\n\
+# Launch Firefox with target URL automatically\n\
+if [ ! -z "$TARGET_URL" ]; then\n\
+    echo "🌐 Auto-launching Firefox for: $TARGET_URL"\n\
+    su - ${BROWSER_USER} -c "DISPLAY=:1 firefox --new-window --start-maximized --no-first-run --disable-infobars \\"$TARGET_URL\\" &"\n\
+    sleep 5\n\
+    echo "✅ Firefox launched successfully"\n\
+else\n\
+    echo "⚠️  No TARGET_URL provided, starting Firefox normally"\n\
+    su - ${BROWSER_USER} -c "DISPLAY=:1 firefox --new-window --start-maximized --no-first-run --disable-infobars &"\n\
+fi\n\
+\n\
+echo "✅ Aejis Browser Isolation System Ready!"\n\
+echo "🌐 Web Interface: http://localhost:6080/vnc.html"\n\
+echo "🔒 VNC Server: localhost:5901"\n\
+echo "🛡️ Complete isolation active"\n\
+\n\
+# Keep container running\n\
+tail -f /dev/null' > /opt/start-browser-isolation.sh && \
+chmod +x /opt/start-browser-isolation.sh
+
+# Expose ports
+EXPOSE 6080 5901
+
+# Switch to browser user
+USER ${BROWSER_USER}
+
+# Set working directory
+WORKDIR ${BROWSER_HOME}/browser-isolation
+
+# Start the system
+CMD ["/opt/start-browser-isolation.sh"]

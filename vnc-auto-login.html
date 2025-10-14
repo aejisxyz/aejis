@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aejis Browser Isolation - Auto Login</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .vnc-container {
+            width: 100%;
+            height: calc(100vh - 40px);
+            position: relative;
+            background: #000;
+        }
+        .login-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+        }
+        .login-info {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .credentials {
+            background: #2c3e50;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Aejis Browser Isolation | Loading https://www.virustotal.com/...
+    </div>
+    <div class="vnc-container">
+        <div class="login-overlay" id="loginOverlay" style="display: none;">
+            <h3>🌐 Browser Loading</h3>
+            <div class="login-info">Loading isolated browser environment...</div>
+        </div>
+        <iframe id="vncFrame" src="http://localhost:6080/vnc.html?autoconnect=true&reconnect=true&host=localhost&port=5901&encrypt=0&password=" onload="hideLoginOverlay()"></iframe>
+    </div>
+
+    <script>
+        function hideLoginOverlay() {
+            // Hide the overlay immediately since Chrome is running in kiosk mode
+            document.getElementById('loginOverlay').style.display = 'none';
+        }
+
+        // Hide overlay immediately on page load
+        window.onload = function() {
+            document.getElementById('loginOverlay').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

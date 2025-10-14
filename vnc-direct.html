@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aejis Browser Isolation - Direct VNC</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .vnc-container {
+            width: 100%;
+            height: calc(100vh - 40px);
+            position: relative;
+            background: #000;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Aejis Browser Isolation | Loading https://www.virustotal.com/...
+    </div>
+    <div class="vnc-container">
+        <iframe src="http://localhost:6080/vnc.html?autoconnect=true&reconnect=true&host=localhost&port=5901&encrypt=0&password="></iframe>
+    </div>
+</body>
+</html>

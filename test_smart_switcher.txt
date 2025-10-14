@@ -1,0 +1,1 @@
+﻿This is a test file for the Smart Switcher functionality. The Smart Switcher should route different file types to appropriate viewers: PDFs to PDFViewer, DOCX to DOCXViewer, Images to ImageViewer, etc.

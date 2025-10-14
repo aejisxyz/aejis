@@ -1,0 +1,1055 @@
+/* Dashboard Page */
+.dashboard-page {
+  min-height: 100vh;
+  background: #000000;
+  padding-top: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(59, 67, 254, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(59, 67, 254, 0.05) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+.dashboard-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(45deg, transparent 0%, rgba(59, 67, 254, 0.03) 25%, transparent 50%, rgba(0, 212, 255, 0.02) 75%, transparent 100%),
+    linear-gradient(-45deg, transparent 0%, rgba(59, 67, 254, 0.02) 25%, transparent 50%, rgba(0, 212, 255, 0.03) 75%, transparent 100%);
+  background-size: 300px 300px, 400px 400px;
+  animation: sleek-scan 12s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes sleek-scan {
+  0% {
+    background-position: 0% 0%, 100% 100%;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%;
+  }
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* User Info Card */
+.user-info-card {
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.user-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(59, 67, 254, 0.05) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 0%, rgba(0, 212, 255, 0.02) 100%);
+  pointer-events: none;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #3b43fe;
+  box-shadow: 0 4px 16px rgba(59, 67, 254, 0.2);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.user-details h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.user-details p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* Linking Section */
+.linking-section {
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.5rem;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.checklist-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(59, 67, 254, 0.05) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 0%, rgba(0, 212, 255, 0.02) 100%);
+  pointer-events: none;
+}
+
+.checklist-section h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.section-subtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.section-title-white {
+  color: #ffffff !important;
+}
+
+.account-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.account-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.account-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.account-card:hover::before {
+  opacity: 1;
+}
+
+.account-card.linked {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.account-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.telegram-icon {
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  box-shadow: 0 8px 24px rgba(59, 67, 254, 0.3);
+}
+
+.desktop-icon {
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  box-shadow: 0 8px 24px rgba(59, 67, 254, 0.3);
+}
+
+.account-info {
+  width: 100%;
+}
+
+.account-info h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.linked-status,
+.unlinked-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  position: relative;
+  z-index: 2;
+}
+
+.linked-status {
+  color: #10b981;
+}
+
+.status-icon {
+  font-size: 1rem;
+}
+
+.link-btn,
+.unlink-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  border: none;
+  position: relative;
+  z-index: 2;
+}
+
+.link-btn {
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 67, 254, 0.25);
+}
+
+.link-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2d35e8 0%, #0056b3 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 67, 254, 0.35);
+}
+
+.link-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.unlink-btn {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.unlink-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  transform: translateY(-2px);
+}
+
+/* Features Showcase */
+.features-showcase {
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.5rem;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.features-showcase::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(59, 67, 254, 0.05) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 0%, rgba(0, 212, 255, 0.02) 100%);
+  pointer-events: none;
+}
+
+.features-header {
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.features-header-left {
+  text-align: left;
+}
+
+.features-header-left h3 {
+  text-align: left;
+}
+
+.features-header-left p {
+  text-align: left;
+}
+
+.telegram-features-section {
+  text-align: left;
+}
+
+.telegram-features-list {
+  text-align: left;
+}
+
+.telegram-features-list .feature-item {
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.telegram-features-list .feature-content-wrapper {
+  text-align: left;
+}
+
+.telegram-features-list .feature-title {
+  text-align: left;
+}
+
+.telegram-features-list .feature-description {
+  text-align: left;
+}
+
+.desktop-features-section {
+  text-align: left;
+}
+
+.desktop-features-list {
+  text-align: left;
+}
+
+.desktop-features-list .feature-item {
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.desktop-features-list .feature-content-wrapper {
+  text-align: left;
+}
+
+.desktop-features-list .feature-title {
+  text-align: left;
+}
+
+.desktop-features-list .feature-description {
+  text-align: left;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.feature-item:hover {
+  padding-left: 0.75rem;
+}
+
+.feature-bullet {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.feature-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.feature-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e8e8e8;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.feature-item h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e8e8e8;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.feature-description {
+  font-size: 0.875rem;
+  color: rgba(160, 160, 160, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* Individual feature styles */
+.feature-file {
+}
+
+.feature-website {
+}
+
+.feature-preview {
+}
+
+.feature-ai {
+}
+
+.feature-realtime {
+}
+
+.feature-sandbox {
+}
+
+.feature-live-preview {
+}
+
+.feature-quick-access {
+}
+
+.feature-download-scan {
+}
+
+.feature-mail-analysis {
+}
+
+/* Desktop features variant */
+.desktop-features {
+}
+
+/* Quick Actions */
+.quick-actions {
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.5rem;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-actions::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(59, 67, 254, 0.05) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 0%, rgba(0, 212, 255, 0.02) 100%);
+  pointer-events: none;
+}
+
+.quick-actions h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.action-btn:hover::before {
+  opacity: 1;
+}
+
+.telegram-btn {
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(59, 67, 254, 0.25);
+}
+
+.telegram-btn:hover {
+  background: linear-gradient(135deg, #2d35e8 0%, #0056b3 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(59, 67, 254, 0.35);
+}
+
+.desktop-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.desktop-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Link Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.link-modal {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.98) 0%, rgba(0, 0, 0, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 0;
+  max-width: 550px;
+  width: 100%;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.modal-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.modal-body {
+  padding: 2.5rem;
+}
+
+.modal-step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.step-content h4 {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.step-content p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.telegram-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #3b43fe 0%, #0074ff 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(59, 67, 254, 0.3);
+}
+
+.telegram-link-btn:hover {
+  background: linear-gradient(135deg, #2d35e8 0%, #0056b3 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(59, 67, 254, 0.4);
+}
+
+.telegram-link-btn svg:first-child {
+  font-size: 1.5rem;
+}
+
+.external-icon {
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+
+.modal-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-divider span {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.token-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.token-display code {
+  flex: 1;
+  color: #10b981;
+  font-size: 0.95rem;
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
+}
+
+.copy-token-btn {
+  background: rgba(59, 67, 254, 0.2);
+  border: 1px solid rgba(59, 67, 254, 0.5);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b43fe;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.copy-token-btn:hover {
+  background: rgba(59, 67, 254, 0.3);
+  transform: scale(1.05);
+}
+
+.modal-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.help-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+/* Back Button */
+.dashboard-page .back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: #f1f5f9;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-page .back-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.dashboard-page .back-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 2rem 1rem;
+  }
+  
+  .dashboard-page .back-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+  }
+
+  .user-info-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .user-details h2 {
+    font-size: 1.5rem;
+  }
+
+  .linking-section,
+  .features-showcase,
+  .quick-actions {
+    padding: 1.5rem;
+  }
+
+  .linking-section h3,
+  .features-showcase h3,
+  .quick-actions h3 {
+    font-size: 1.5rem;
+  }
+
+  .feature-item {
+    padding: 0.875rem 0;
+  }
+
+  .account-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .account-card {
+    padding: 1.5rem;
+  }
+
+  .account-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .link-modal {
+    max-width: 100%;
+    margin: 1rem;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .user-info-card {
+    padding: 1.5rem;
+  }
+
+  .user-avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .avatar-placeholder {
+    font-size: 2rem;
+  }
+
+  .user-details h2 {
+    font-size: 1.25rem;
+  }
+
+  .linking-section,
+  .features-showcase,
+  .quick-actions {
+    padding: 1.25rem;
+  }
+
+  .account-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .account-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.75rem;
+  }
+
+  .feature-item {
+    padding: 0.75rem 0;
+  }
+
+  .feature-title {
+    font-size: 0.9rem;
+  }
+
+  .feature-description {
+    font-size: 0.8rem;
+  }
+
+  .feature-bullet {
+    font-size: 0.65rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .step-content h4 {
+    font-size: 0.95rem;
+  }
+
+  .step-content p {
+    font-size: 0.85rem;
+  }
+}
+

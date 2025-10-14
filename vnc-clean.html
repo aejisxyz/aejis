@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aejis Browser Isolation - Clean View</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        .vnc-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background: #000;
+            margin-top: 40px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            z-index: 999;
+        }
+        .controls {
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .controls button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .controls button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Aejis Browser Isolation | Clean View
+    </div>
+    
+    <div class="controls">
+        <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+        <button onclick="refreshBrowser()">🔄 Refresh</button>
+        <button onclick="toggleControls()">👁️ Hide Controls</button>
+    </div>
+    
+    <div class="vnc-container">
+        <div class="loading" id="loading">🌐 Loading isolated browser...</div>
+        <iframe id="vncFrame" 
+                src="http://localhost:6080/vnc.html?autoconnect=true&reconnect=true&host=localhost&port=5901&encrypt=0&password=&view_only=false&resize=scale&quality=6&compression=2&shared=false&view_clip=false&show_dot=false&logging=warn&reconnect_delay=1000" 
+                onload="hideLoading()">
+        </iframe>
+    </div>
+
+    <script>
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function refreshBrowser() {
+            document.getElementById('vncFrame').src = document.getElementById('vncFrame').src;
+        }
+
+        function toggleControls() {
+            const controls = document.querySelector('.controls');
+            const header = document.querySelector('.header');
+            if (controls.style.display === 'none') {
+                controls.style.display = 'block';
+                header.style.display = 'block';
+            } else {
+                controls.style.display = 'none';
+                header.style.display = 'none';
+            }
+        }
+
+        // Hide noVNC control panel using CSS injection
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                try {
+                    const iframe = document.getElementById('vncFrame');
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    // Hide all noVNC UI elements
+                    const elementsToHide = [
+                        'noVNC_control_bar_anchor',
+                        'noVNC_connect_dlg',
+                        'noVNC_status',
+                        'noVNC_credentials_dlg',
+                        'noVNC_transition'
+                    ];
+                    
+                    elementsToHide.forEach(id => {
+                        const element = iframeDoc.getElementById(id);
+                        if (element) {
+                            element.style.display = 'none';
+                        }
+                    });
+                    
+                    // Make the VNC container full screen
+                    const vncContainer = iframeDoc.getElementById('noVNC_container');
+                    if (vncContainer) {
+                        vncContainer.style.position = 'fixed';
+                        vncContainer.style.top = '0';
+                        vncContainer.style.left = '0';
+                        vncContainer.style.width = '100%';
+                        vncContainer.style.height = '100%';
+                        vncContainer.style.zIndex = '1';
+                    }
+                    
+                    // Hide body margins and padding
+                    const body = iframeDoc.body;
+                    if (body) {
+                        body.style.overflow = 'hidden';
+                        body.style.margin = '0';
+                        body.style.padding = '0';
+                    }
+                    
+                } catch (e) {
+                    console.log('Cross-origin restrictions prevent direct DOM manipulation');
+                }
+            }, 3000);
+        });
+
+        // Auto-hide controls after 5 seconds
+        setTimeout(function() {
+            document.querySelector('.controls').style.opacity = '0.3';
+        }, 5000);
+
+        // Show controls on mouse movement
+        let mouseTimer;
+        document.addEventListener('mousemove', function() {
+            const controls = document.querySelector('.controls');
+            controls.style.opacity = '1';
+            clearTimeout(mouseTimer);
+            mouseTimer = setTimeout(function() {
+                controls.style.opacity = '0.3';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

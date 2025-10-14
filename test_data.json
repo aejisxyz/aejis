@@ -1,0 +1,23 @@
+{
+  "name": "Test JSON File",
+  "version": "1.0.0",
+  "description": "This is a test JSON file for the text viewer",
+  "features": [
+    "Text file support",
+    "JSON syntax highlighting",
+    "Search functionality",
+    "Copy to clipboard",
+    "Download option"
+  ],
+  "metadata": {
+    "created": "2025-01-24",
+    "author": "Aejis System",
+    "file_type": "json"
+  },
+  "settings": {
+    "line_numbers": true,
+    "search_enabled": true,
+    "copy_enabled": true,
+    "download_enabled": true
+  }
+}

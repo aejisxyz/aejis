@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aejis Browser Isolation - Auto Connect</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .vnc-container {
+            width: 100%;
+            height: calc(100vh - 40px);
+            position: relative;
+            background: #000;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 1000;
+        }
+        .loading-spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff0000;
+            text-align: center;
+            z-index: 1000;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+            transform: scale(1);
+            transform-origin: top left;
+        }
+        
+        /* Hide VNC toolbar by clipping it out */
+        .vnc-container {
+            overflow: hidden;
+        }
+        
+        .vnc-container iframe {
+            margin-left: -60px;
+            width: calc(100% + 80px);
+            clip-path: inset(0 20px 0 60px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Aejis Browser Isolation | Loading https://www.virustotal.com/... | <span id="status" style="color: #ffff00;">Connecting...</span>
+    </div>
+    <div class="vnc-container">
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <div>Initializing isolated browser...</div>
+        </div>
+        <iframe id="vnc-iframe" src="http://localhost:6080/vnc.html?autoconnect=true&reconnect=true&resize=remote&quality=9&compression=0&shared=true&password=&view_only=false&logging=warn&show_dot=false&hide_toolbar=true&hide_controls=true" style="display: none;"></iframe>
+    </div>
+
+    <script>
+        const iframe = document.getElementById('vnc-iframe');
+        const status = document.getElementById('status');
+        const loading = document.getElementById('loading');
+
+        function updateStatus(message, color = '#00ff00') {
+            status.textContent = message;
+            status.style.color = color;
+        }
+
+        function hideLoading() {
+            loading.style.display = 'none';
+            iframe.style.display = 'block';
+        }
+
+        function showError(message) {
+            loading.innerHTML = '<div class="error">Error: ' + message + '</div>';
+        }
+
+        // Auto-connect by showing iframe directly
+        window.onload = function() {
+            updateStatus('Connecting to isolated browser...', '#ffff00');
+            
+            // Show the VNC iframe after a short delay
+            setTimeout(function() {
+                updateStatus('Connected', '#00ff00');
+                hideLoading();
+                
+                // Hide VNC toolbar after iframe loads
+                setTimeout(function() {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const toolbar = iframeDoc.querySelector('.noVNC_control_bar');
+                        if (toolbar) {
+                            toolbar.style.display = 'none';
+                        }
+                        const controlbar = iframeDoc.querySelector('#noVNC_control_bar');
+                        if (controlbar) {
+                            controlbar.style.display = 'none';
+                        }
+                    } catch(e) {
+                        // Cross-origin restrictions - ignore
+                    }
+                }, 3000);
+            }, 2000);
+        };
+
+        // Handle window resize
+        window.onresize = function() {
+            // iframe will handle its own resizing
+        };
+    </script>
+</body>
+</html>

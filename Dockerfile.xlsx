@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libxml2-dev \
+    libxslt-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN pip install --no-cache-dir \
+    openpyxl==3.1.2 \
+    python-docx==1.1.0 \
+    PyPDF2==3.0.1 \
+    Pillow==10.0.1
+
+# Create working directory
+WORKDIR /app
+
+# Copy processing script
+COPY xlsx_processor.py /app/
+
+# Set entrypoint
+ENTRYPOINT ["python", "/app/xlsx_processor.py"]

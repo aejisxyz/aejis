@@ -1,0 +1,34 @@
+# Dockerfile for PPTX processing
+FROM python:3.11-slim
+
+# Install system dependencies including LibreOffice
+RUN apt-get update && apt-get install -y \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    libreoffice \
+    libreoffice-writer \
+    libreoffice-calc \
+    libreoffice-impress \
+    libreoffice-draw \
+    fonts-liberation \
+    fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    python-pptx \
+    lxml \
+    Pillow \
+    matplotlib \
+    numpy
+
+# Copy the processing script
+COPY pptx_processor_enhanced.py /app/pptx_processor.py
+
+# Set working directory
+WORKDIR /app
+
+# Set entrypoint
+ENTRYPOINT ["python", "pptx_processor.py"]
+

@@ -1,0 +1,49 @@
+# Commercial-friendly noVNC browser container
+FROM ubuntu:20.04
+
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    git \
+    build-essential \
+    python3 \
+    python3-pip \
+    xfce4 \
+    xfce4-goodies \
+    x11vnc \
+    xvfb \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install noVNC
+RUN git clone https://github.com/novnc/noVNC.git /opt/novnc \
+    && git clone https://github.com/novnc/websockify.git /opt/novnc/utils/websockify
+
+# Install Chrome
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Firefox
+RUN apt-get update && apt-get install -y firefox \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create startup script
+RUN echo '#!/bin/bash\n\
+export DISPLAY=:1\n\
+Xvfb :1 -screen 0 1920x1080x24 &\n\
+xfce4-session &\n\
+x11vnc -display :1 -nopw -listen localhost -xkb -ncache 10 -ncache_cr -forever &\n\
+cd /opt/novnc && ./utils/novnc_proxy --vnc localhost:5900 --listen 6080\n\
+' > /start.sh && chmod +x /start.sh
+
+EXPOSE 6080 5900
+
+CMD ["/start.sh"]
+

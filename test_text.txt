@@ -1,0 +1,16 @@
+Hello World! This is a test text file.
+
+This file contains:
+- Multiple lines
+- Special characters: !@#$%^&*()
+- Numbers: 1234567890
+- JSON-like structure: {"key": "value", "array": [1, 2, 3]}
+
+The text viewer should display this content with:
+- Line numbers
+- Search functionality
+- Copy to clipboard
+- Download option
+- Character and line count
+
+This is a comprehensive test of the text viewer functionality.
