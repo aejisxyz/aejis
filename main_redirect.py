@@ -33,8 +33,8 @@ class AejisRedirectBot:
     def __init__(self):
         """Initialize the redirect bot"""
         self.config = Config()
-        self.website_url = "http://localhost:5000"  # Flask backend URL
-        self.api_url = "http://localhost:5000"  # Flask backend
+        self.website_url = "https://www.aejis.xyz"  # Production website
+        self.api_url = "https://api.aejis.xyz"  # Production backend API
         self.user_analyses = {}  # Track active analyses per user: {user_id: [analysis_ids]}
         self.user_chat_ids = {}  # Store user chat IDs for notifications: {user_id: chat_id}
         self.linked_users = set()  # Cache of linked Telegram user IDs
