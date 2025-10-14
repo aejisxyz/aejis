@@ -194,39 +194,39 @@ Click below to get started! 🚀
                 self.linked_users.add(telegram_id)
                 
                 success_message = f"""
-✅ **Account Linked Successfully!**
+ACCOUNT LINKED SUCCESSFULLY
 
 Your Telegram is now connected to your Aejis account.
 
-**🎉 You can now:**
-• 📄 Send files to scan for malware
-• 🔗 Send URLs to check for threats
-• 📊 Track your scan history
-• 🛡️ Get detailed security reports
+You can now:
+• Send files to scan for malware
+• Send URLs to check for threats
+• Track your scan history
+• Get detailed security reports
 
-**⚡ Quick Start:**
-Just send me any file or URL to analyze!
+Quick Start:
+Just send me any file or URL to analyze.
 
-**📱 Commands:**
-• Send file → Instant scan
-• Send URL → Website analysis  
-• /status → Account info
-• /help → More commands
+Available Commands:
+• Send file - Instant security scan
+• Send URL - Website analysis  
+• /status - Account information
+• /help - View all commands
 
-Let's keep you safe! 🛡️
+Your security analysis platform is ready.
                 """
                 
-                await update.message.reply_text(success_message, parse_mode='Markdown')
+                await update.message.reply_text(success_message)
                 logger.info(f"✅ Successfully linked user {telegram_id}")
                 
             else:
                 error_msg = data.get('message', 'Unknown error')
                 error_message = f"""
-❌ **Linking Failed**
+LINKING FAILED
 
 {error_msg}
 
-**🔧 Please try again:**
+Please try again:
 1. Go to {self.website_url}/dashboard
 2. Click "Link Telegram Account"
 3. Generate a new link token
@@ -235,27 +235,24 @@ Let's keep you safe! 🛡️
 If the problem persists, contact support.
                 """
                 
-                await update.message.reply_text(error_message, parse_mode='Markdown')
+                await update.message.reply_text(error_message)
                 logger.warning(f"❌ Failed to link user {telegram_id}: {error_msg}")
                 
         except requests.exceptions.ConnectionError as e:
             logger.error(f"❌ Backend not running: {e}")
             await update.message.reply_text(
-                f"❌ **Backend Server Not Running**\n\n"
+                f"BACKEND SERVER NOT AVAILABLE\n\n"
                 f"The Aejis backend server is currently offline.\n\n"
-                f"**Admin:** Please start the backend server:\n"
-                f"`python website_backend.py`\n\n"
-                f"Then try linking again from {self.website_url}/dashboard",
-                parse_mode='Markdown'
+                f"Please try again later or contact support.\n"
+                f"Then try linking again from {self.website_url}/dashboard"
             )
             
         except Exception as e:
             logger.error(f"Error linking account for user {telegram_id}: {e}")
             await update.message.reply_text(
-                f"❌ **Error**\n\n"
+                f"LINKING ERROR\n\n"
                 f"Failed to link account: {str(e)}\n\n"
-                f"Please contact support or try again later.",
-                parse_mode='Markdown'
+                f"Please contact support or try again later."
             )
     
     async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
