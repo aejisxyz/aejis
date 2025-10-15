@@ -3316,16 +3316,10 @@ def get_archive_file_content_direct(analysis_id, file_path):
 
 @app.route('/preview/<analysis_id>')
 def get_file_preview(analysis_id):
-    """Redirect to React frontend preview page"""
-    frontend_url = os.getenv('WEBSITE_URL', 'https://www.aejis.xyz')
-    
+    """Generate preview data for analysis"""
     if analysis_id not in analysis_results:
-        return redirect(f'{frontend_url}/')
+        return jsonify({'error': 'Analysis not found'}), 404
     
-    # Redirect to React frontend preview page
-    return redirect(f'{frontend_url}/preview/{analysis_id}')
-    
-    # Old code below (kept for reference but not executed)
     result = analysis_results[analysis_id]
     
     if result['status'] != 'completed':
