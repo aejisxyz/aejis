@@ -24,8 +24,13 @@ const LivePreview = () => {
 
       // Get the URL and browser session info from analysis results
       const resultsResponse = await axios.get(`${API_URL}/url-results-data/${id}`);
+      console.log('📊 Results Response:', resultsResponse.data);
+      
       const targetUrl = resultsResponse.data?.target_url || resultsResponse.data?.results?.url_info?.url || resultsResponse.data?.url;
       const browserSession = resultsResponse.data?.browser_session;
+      
+      console.log('🔍 Target URL:', targetUrl);
+      console.log('🖥️ Browser Session:', browserSession);
       
       if (!targetUrl) {
         setError('Target URL not found in analysis results');
@@ -37,7 +42,7 @@ const LivePreview = () => {
 
       // Check if browser session is already running (pre-started during analysis)
       if (browserSession && browserSession.ready && browserSession.auto_connect_url) {
-        console.log('✅ Using pre-started browser session');
+        console.log('✅ Using pre-started browser session:', browserSession.auto_connect_url);
         setVncUrl(browserSession.auto_connect_url);
         // Instant connection - no wait time!
         setTimeout(() => {
@@ -47,6 +52,7 @@ const LivePreview = () => {
       }
 
       // If no pre-started session, start one now (fallback)
+      console.log('⚠️ No pre-started session found. Browser session data:', browserSession);
       console.log('⚡ Starting new browser isolation session...');
       const browserResponse = await axios.get(`${API_URL}/browser/${id}`);
       
