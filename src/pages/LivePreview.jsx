@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Shield, Globe, Loader, AlertCircle, X } from 'lucide-react';
+import axios from 'axios';
+import API_URL from '../config/api';
 import './LivePreview.css';
 
 const LivePreview = () => {
@@ -20,14 +22,24 @@ const LivePreview = () => {
       setLoading(true);
       setError(null);
 
-      // Start browser isolation session
-      const response = await fetch(`/browser/${id}`);
-      const data = await response.json();
+      // First, get the URL from the analysis results
+      const resultsResponse = await axios.get(`${API_URL}/url-results-data/${id}`);
+      const targetUrl = resultsResponse.data?.target_url || resultsResponse.data?.results?.url_info?.url || resultsResponse.data?.url;
+      
+      if (!targetUrl) {
+        setError('Target URL not found in analysis results');
+        setLoading(false);
+        return;
+      }
 
-      if (data.success) {
-        setUrl(data.target_url);
+      setUrl(targetUrl);
+
+      // Start browser isolation session
+      const browserResponse = await axios.get(`${API_URL}/browser/${id}`);
+      
+      if (browserResponse.data.success) {
         // Use VNC with auto-connect and full screen settings
-        const vncPath = `http://localhost:6080/vnc.html?autoconnect=true&reconnect=true&resize=scale&quality=9&compression=0&shared=true&password=&view_only=false&logging=warn&show_dot=false`;
+        const vncPath = `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(targetUrl)}`;
         setVncUrl(vncPath);
         
         // Wait for VNC to initialize
@@ -35,19 +47,28 @@ const LivePreview = () => {
           setLoading(false);
         }, 3000);
       } else {
-        setError(data.error || 'Failed to start browser isolation');
+        setError(browserResponse.data.error || 'Failed to start browser isolation');
         setLoading(false);
       }
     } catch (err) {
       console.error('Error initializing browser session:', err);
-      setError('Failed to connect to browser isolation service');
-      setLoading(false);
+      // If browser isolation fails, try direct VNC connection
+      if (url) {
+        const vncPath = `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(url)}`;
+        setVncUrl(vncPath);
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
+      } else {
+        setError('Failed to connect to browser isolation service. Please ensure Docker is running.');
+        setLoading(false);
+      }
     }
   };
 
   const handleClose = () => {
     // Stop browser session
-    fetch(`/browser/${id}/stop`, { method: 'POST' })
+    axios.post(`${API_URL}/browser/${id}/stop`)
       .then(() => navigate(-1))
       .catch(() => navigate(-1));
   };
