@@ -22,9 +22,10 @@ const LivePreview = () => {
       setLoading(true);
       setError(null);
 
-      // First, get the URL from the analysis results
+      // Get the URL and browser session info from analysis results
       const resultsResponse = await axios.get(`${API_URL}/url-results-data/${id}`);
       const targetUrl = resultsResponse.data?.target_url || resultsResponse.data?.results?.url_info?.url || resultsResponse.data?.url;
+      const browserSession = resultsResponse.data?.browser_session;
       
       if (!targetUrl) {
         setError('Target URL not found in analysis results');
@@ -34,35 +35,35 @@ const LivePreview = () => {
 
       setUrl(targetUrl);
 
-      // Start browser isolation session
+      // Check if browser session is already running (pre-started during analysis)
+      if (browserSession && browserSession.ready && browserSession.auto_connect_url) {
+        console.log('✅ Using pre-started browser session');
+        setVncUrl(browserSession.auto_connect_url);
+        // Instant connection - no wait time!
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+        return;
+      }
+
+      // If no pre-started session, start one now (fallback)
+      console.log('⚡ Starting new browser isolation session...');
       const browserResponse = await axios.get(`${API_URL}/browser/${id}`);
       
       if (browserResponse.data.success) {
-        // Use VNC with auto-connect and full screen settings
-        const vncPath = `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(targetUrl)}`;
+        const vncPath = browserResponse.data.custom_vnc_url || `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(targetUrl)}`;
         setVncUrl(vncPath);
-        
-        // Wait for VNC to initialize
         setTimeout(() => {
           setLoading(false);
-        }, 3000);
+        }, 2000);
       } else {
         setError(browserResponse.data.error || 'Failed to start browser isolation');
         setLoading(false);
       }
     } catch (err) {
       console.error('Error initializing browser session:', err);
-      // If browser isolation fails, try direct VNC connection
-      if (url) {
-        const vncPath = `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(url)}`;
-        setVncUrl(vncPath);
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
-      } else {
-        setError('Failed to connect to browser isolation service. Please ensure Docker is running.');
-        setLoading(false);
-      }
+      setError('Failed to connect to browser isolation service. Please ensure Docker is running.');
+      setLoading(false);
     }
   };
 

@@ -1905,7 +1905,15 @@ if __name__ == "__main__":
 secure_preview = SecureFilePreview()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for React frontend
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000", "http://localhost:5000", "https://www.aejis.xyz", "https://aejis.xyz"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": True
+    }
+})  # Enable CORS for React frontend with specific configuration
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size
 app.config['UPLOAD_FOLDER'] = tempfile.gettempdir()
 
@@ -4990,8 +4998,24 @@ def analyze_url_async(analysis_id: str, url: str):
             analysis_results[analysis_id]['status'] = 'completed'
             analysis_results[analysis_id]['results'] = final_results
             analysis_results[analysis_id]['progress'] = 100
+            analysis_results[analysis_id]['target_url'] = url
             save_results()  # Persist to disk
             logger.info(f"[URL_ANALYSIS] Results stored successfully")
+            
+            # Pre-start browser isolation session for instant Live View
+            try:
+                logger.info(f"🚀 Pre-starting browser isolation session for {analysis_id}")
+                session_data = browser_isolation_service.start_browser_session(analysis_id, url)
+                analysis_results[analysis_id]['browser_session'] = {
+                    'ready': True,
+                    'vnc_url': session_data.get('web_url'),
+                    'auto_connect_url': session_data.get('auto_connect_url'),
+                    'started_at': time.time()
+                }
+                logger.info(f"✅ Browser isolation session ready for instant access")
+            except Exception as browser_error:
+                logger.warning(f"⚠️ Could not pre-start browser session: {browser_error}")
+                analysis_results[analysis_id]['browser_session'] = {'ready': False, 'error': str(browser_error)}
         except Exception as e:
             logger.error(f"[URL_ANALYSIS] Results storage failed: {e}", exc_info=True)
         
