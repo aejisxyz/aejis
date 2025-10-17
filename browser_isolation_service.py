@@ -47,7 +47,7 @@ class AejisBrowserIsolationService:
             logger.info(f"Session {session_id} already running.")
             # Update existing session with auto_connect_url if missing
             if 'auto_connect_url' not in self.sessions[session_id]:
-                self.sessions[session_id]['auto_connect_url'] = f"http://localhost:5000/vnc-auto-connect.html?url={target_url}"
+                self.sessions[session_id]['auto_connect_url'] = f"https://api.aejis.xyz/vnc-auto-connect.html?url={target_url}"
             return self.sessions[session_id]
         
         try:
@@ -78,10 +78,10 @@ class AejisBrowserIsolationService:
                 session_data = {
                     "container_id": self.get_container_id(),
                     "status": "running",
-                    "vnc_url": f"ws://localhost:6080/websockify?token={session_id}",
-                    "web_url": f"http://localhost:6080/vnc.html",
-                    "custom_vnc_url": f"ws://localhost:8080",
-                    "auto_connect_url": f"http://localhost:5000/vnc-auto-connect.html?url={target_url}",
+                    "vnc_url": f"wss://api.aejis.xyz/websockify?token={session_id}",
+                    "web_url": f"https://api.aejis.xyz/vnc.html",
+                    "custom_vnc_url": f"wss://api.aejis.xyz:8080",
+                    "auto_connect_url": f"https://api.aejis.xyz/vnc-auto-connect.html?url={target_url}",
                     "target_url": target_url,
                     "start_time": time.time(),
                     "isolation_level": "maximum",
@@ -104,10 +104,10 @@ class AejisBrowserIsolationService:
                     session_data = {
                         "container_id": existing_container.id,
                         "status": "running",
-                        "vnc_url": f"ws://localhost:6080/websockify?token={session_id}",
-                        "web_url": f"http://localhost:6080/vnc.html",
-                        "custom_vnc_url": f"ws://localhost:8080",
-                        "auto_connect_url": f"http://localhost:5000/vnc-auto-connect.html?url={target_url}",
+                        "vnc_url": f"wss://api.aejis.xyz/websockify?token={session_id}",
+                        "web_url": f"https://api.aejis.xyz/vnc.html",
+                        "custom_vnc_url": f"wss://api.aejis.xyz:8080",
+                        "auto_connect_url": f"https://api.aejis.xyz/vnc-auto-connect.html?url={target_url}",
                         "target_url": target_url,
                         "start_time": time.time(),
                         "isolation_level": "maximum",
@@ -152,10 +152,10 @@ class AejisBrowserIsolationService:
             session_data = {
                 "container_id": container.id,
                 "status": "running",
-                "vnc_url": f"ws://localhost:6080/websockify?token={session_id}",
-                "web_url": f"http://localhost:6080/vnc.html",
-                "custom_vnc_url": f"ws://localhost:8080",
-                "auto_connect_url": f"http://localhost:5000/vnc-auto-connect.html?url={target_url}",
+                "vnc_url": f"wss://api.aejis.xyz/websockify?token={session_id}",
+                "web_url": f"https://api.aejis.xyz/vnc.html",
+                "custom_vnc_url": f"wss://api.aejis.xyz:8080",
+                "auto_connect_url": f"https://api.aejis.xyz/vnc-auto-connect.html?url={target_url}",
                 "target_url": target_url,
                 "start_time": time.time(),
                 "isolation_level": "maximum",
@@ -236,7 +236,7 @@ class AejisBrowserIsolationService:
         # Update existing session with auto_connect_url if missing
         if 'auto_connect_url' not in self.sessions[session_id]:
             target_url = self.sessions[session_id].get('target_url', 'https://www.google.com')
-            self.sessions[session_id]['auto_connect_url'] = f"http://localhost:5000/vnc-auto-connect.html?url={target_url}"
+            self.sessions[session_id]['auto_connect_url'] = f"https://api.aejis.xyz/vnc-auto-connect.html?url={target_url}"
         
         return self.sessions[session_id]
     
