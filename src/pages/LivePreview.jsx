@@ -51,19 +51,29 @@ const LivePreview = () => {
         return;
       }
 
-      // If no pre-started session, start one now (fallback)
-      console.log('⚠️ No pre-started session found. Browser session data:', browserSession);
+      // If no pre-started session, start one now (fallback - for old analyses or when Docker wasn't running)
+      console.log('⚠️ No pre-started session found. Starting on-demand...');
+      console.log('📝 Analysis was created at:', resultsResponse.data.created_at);
       console.log('⚡ Starting new browser isolation session...');
-      const browserResponse = await axios.get(`${API_URL}/browser/${id}`);
       
-      if (browserResponse.data.success) {
-        const vncPath = browserResponse.data.custom_vnc_url || `${API_URL}/vnc-auto-connect.html?url=${encodeURIComponent(targetUrl)}`;
-        setVncUrl(vncPath);
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      } else {
-        setError(browserResponse.data.error || 'Failed to start browser isolation');
+      try {
+        const browserResponse = await axios.get(`${API_URL}/browser/${id}`);
+        
+        if (browserResponse.data.success) {
+          // Get the VNC URL from response
+          const vncBaseUrl = API_URL.replace('/api', ''); // Remove /api suffix if present
+          const vncPath = `${vncBaseUrl}/vnc-auto-connect.html?url=${encodeURIComponent(targetUrl)}`;
+          console.log('✅ Browser session started, VNC URL:', vncPath);
+          setVncUrl(vncPath);
+          setTimeout(() => {
+            setLoading(false);
+          }, 2000);
+        } else {
+          throw new Error(browserResponse.data.error || 'Failed to start browser isolation');
+        }
+      } catch (browserError) {
+        console.error('❌ Browser isolation failed:', browserError);
+        setError(`Failed to start browser isolation: ${browserError.message || 'Unknown error'}. Please ensure Docker is running on the server.`);
         setLoading(false);
       }
     } catch (err) {
