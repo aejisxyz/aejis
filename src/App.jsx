@@ -11,6 +11,7 @@ import Analysis from './pages/Analysis.jsx';
 import Results from './pages/Results.jsx';
 import URLResults from './pages/URLResults.jsx';
 import Preview from './pages/Preview.jsx';
+import LivePreview from './pages/LivePreview.jsx';
 import About from './pages/About.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Footer from './components/Footer.jsx';
@@ -60,6 +61,7 @@ function App() {
             <Route path="/results/:id" element={<Results />} />
             <Route path="/url-results/:id" element={<URLResults />} />
             <Route path="/preview/:id" element={<Preview />} />
+            <Route path="/live-preview/:id" element={<LivePreview />} />
             <Route path="/about" element={<About />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>

@@ -466,56 +466,20 @@ const URLResults = () => {
               </div>
             </div>
             
-            <div className="desktop-app-message">
-              <div className="desktop-app-icon">
-                <Globe2 size={48} />
-              </div>
-              <div className="desktop-app-content">
-                <h3>Live Website Preview Available on Desktop</h3>
-                <p className="desktop-app-description">
-                  Get real-time website preview in a secure isolated environment using Aegis for PC
-                </p>
-                
-                <div className="desktop-app-instructions">
-                  <div className="instruction-item">
-                    <div className="instruction-number">1</div>
-                    <div className="instruction-text">
-                      <strong>Copy the website URL</strong>
-                      <p>Click the button below to copy the link</p>
-                    </div>
-                  </div>
-                  
-                  <div className="instruction-item">
-                    <div className="instruction-number">2</div>
-                    <div className="instruction-text">
-                      <strong>Open in Aegis Desktop</strong>
-                      <p>Paste the link and click open, or hold <kbd>Alt + A</kbd> for 2 seconds for quick access</p>
-                    </div>
-                  </div>
+            <div className="live-view-action">
+              <button 
+                onClick={() => navigate(`/live-preview/${id}`)}
+                className="live-view-button"
+              >
+                <Globe2 className="live-view-icon" size={24} />
+                <div className="live-view-text">
+                  <span className="live-view-title">Live View</span>
+                  <span className="live-view-subtitle">Open in Isolated Browser</span>
                 </div>
-                
-                <div className="desktop-app-actions">
-                  <button 
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(results?.url || '');
-                        toast.success('URL copied to clipboard!');
-                      } catch (err) {
-                        toast.error('Failed to copy URL');
-                      }
-                    }}
-                    className="copy-url-btn"
-                  >
-                    Copy URL
-                  </button>
-                  <button 
-                    className="download-desktop-btn"
-                    onClick={() => toast.info('Desktop app coming soon!')}
-                  >
-                    Download Aegis for PC
-                  </button>
-                </div>
-              </div>
+              </button>
+              <p className="live-view-description">
+                Browse this website safely in a fully isolated environment with Chromium in kiosk mode
+              </p>
             </div>
           </div>
         </div>
