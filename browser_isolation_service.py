@@ -216,7 +216,7 @@ class AejisBrowserIsolationService:
             # Execute browser launcher script in container
             container = self.client.containers.get(self.container_name)
             result = container.exec_run(
-                f"bash -c 'DISPLAY=:1 chromium-browser --new-window --start-maximized --no-sandbox --disable-dev-shm-usage \"{target_url}\" &'",
+                f"bash -c 'DISPLAY=:1 firefox --new-window --start-maximized --no-first-run --disable-infobars \"{target_url}\" &'",
                 detach=True
             )
             logger.info(f"Browser launched for URL: {target_url}")
